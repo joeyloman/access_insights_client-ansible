@@ -1,0 +1,49 @@
+[redhat-access-insights]
+
+{% if log_level is defined %}
+loglevel={{ log_level }}
+{% endif %}
+
+{% if auto_config is defined %}
+auto_config={{ auto_config }}
+{% endif %}
+
+{% if authmethod is defined %}
+authmethod={{ authmethod }}
+{% endif %}
+
+{% if username is defined %}
+username={{ username }}
+{% endif %}
+
+{% if password is defined %}
+password={{ password }}
+{% endif %}
+
+{% if base_url is defined %}
+base_url={{ base_url }}
+{% endif %}
+
+{% if proxy is defined %}
+proxy={{ proxy }}
+{% endif %}
+
+{% if cert_verify is defined %}
+cert_verify={{ cert_verify }}
+{% endif %}
+
+{% if gpg is defined %}
+gpg={{ gpg }}
+{% endif %}
+
+{% if auto_update is defined %}
+auto_update={{ auto_update }}
+{% endif %}
+
+{% if obfuscate is defined %}
+obfuscate={{ obfuscate }}
+{% endif %}
+
+{% if obfuscate_hostname is defined %}
+obfuscate_hostname={{ obfuscate_hostname }}
+{% endif %}

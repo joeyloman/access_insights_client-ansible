@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Installing the Red Hat Insights client
+      yum:
+        name: "redhat-access-insights"
+        enablerepo: "rhel-{{ ansible_distribution_major_version }}-server-rpms"
+        state: latest
+
+    - name: Update /etc/redhat-access-insights/redhat-access-insights.conf
+      template:
+        src: "templates/redhat-access-insights.conf.j2"
+        dest: /etc/redhat-access-insights/redhat-access-insights.conf
+
+    - name: Removing daily cron job
+      file:
+        path: /etc/cron.daily/redhat-access-insights
+        state: absent
+
+    - name: Removing weekly cron job
+      file:
+        path: /etc/cron.weekly/redhat-access-insights
+        state: absent
+
+    - name: Creating the Insights cronjob
+      file:
+        src: "/etc/redhat-access-insights/redhat-access-insights.cron"
+        dest: "/etc/cron.{{ upload_schedule }}/redhat-access-insights"
+        owner: root
+        group: root
+        mode: 0755
+        state: link
+
+    - stat: path=/etc/redhat-access-insights/.unregistered
+      register: unreg
+
+    - name: Register the client to Insights
+      command: "/usr/bin/redhat-access-insights --register"
+      args:
+        creates: /etc/redhat-access-insights/.registered
+      when: unreg.stat.exists == false
